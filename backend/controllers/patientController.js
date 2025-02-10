@@ -30,13 +30,23 @@ exports.getPatientById = async (req, res) => {
 exports.createPatient = async (req, res) => {
   try {
     const { name, abha_number, gender, dob, phone, email, address } = req.body;
+
+    // Check if ABHA number is already registered
+    const existingPatient = await Patient.findOne({ where: { abha_number } });
+
+
+    if (existingPatient) {
+      return res.status(400).json({ error: "Patient with this ABHA number already exists" });
+    }
+
+    // Create a new patient entry
     const newPatient = await Patient.create({ name, abha_number, gender, dob, phone, email, address });
-    res.status(201).json(newPatient);
+    res.status(201).json({ message: "Patient registered successfully", patient: newPatient });
   } catch (error) {
+    console.error("Error creating patient:", error);
     res.status(500).json({ error: "Failed to create patient" });
   }
 };
-
 // Update a Patient
 exports.updatePatient = async (req, res) => {
   try {
