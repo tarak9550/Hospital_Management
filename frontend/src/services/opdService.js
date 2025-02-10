@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/opd";
+const API_URL = "http://54.169.168.155:5000/api/opd";
 
 // Get all OPD visits
 export const getOPDVisits = async () => {
